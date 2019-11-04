@@ -33,7 +33,7 @@
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar /static-top">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
@@ -86,7 +86,7 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow" role="presentation">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{ u }}</span><img class="border rounded-circle img-profile"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small"></span><img class="border rounded-circle img-profile"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"
                                         role="menu"><a class="dropdown-item" role="presentation" href="/profile"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="/"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
@@ -115,23 +115,20 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>E-mail</th>
-                                            <th>Grade</th>
-                                            <th>MC Name</th>
-                                            <th>Position Applied For</th>
+                                            <th>Position</th>
+                                            <th>Email</th>
+                                            <th>Minecraft Username</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for member in m %}
-                                        <tr>
-                                            <th>{{member[0]}}</th>
-                                            <th>{{member[1]}}</th>
-                                            <th>{{member[2]}}</th>
-                                            <th>{{member[3]}}</th>
-                                            <th>{{member[4]}}</th>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
+                                    {% for member in m %}
+                                    <tr>
+                                        <th>{{member[0]}}</th>
+                                        <th>{{member[1]}}</th>
+                                        <th>{{member[2]}}</th>
+                                        <th>{{member[4]}}</th>
+                                    </tr>
+                                    {% endfor %}
                                 </table>
                             </div>
                             <div class="row">

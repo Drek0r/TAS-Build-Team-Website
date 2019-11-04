@@ -7,7 +7,6 @@
     <title>Register - Brand</title>
     <link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome-all.min.css">
 </head>
 
 <body class="bg-gradient-primary">
@@ -21,23 +20,19 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h4 class="text-dark mb-4">Expression of Interest</h4>
+                                <h4 class="text-dark mb-4">Create an Account!</h4>
                             </div>
-                            <p>Once Your Expression of interest application is processed, Our Project Manager or our Technical Team Mannager will get in contact with you as soon as possible. Please fill out the Form Below and Click submit.<br></p>
-                            <form class="user"
-                                action="/registrationconfirmation">
+                            <form class="user" method='post' action='/addedlogin'>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Names (First and Last)" name="name"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Position (Architectual, Redstone/Systems)" name="Position"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Username" name="name"></div>
+                                    <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
                                 </div>
-                                <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email"></div>
-                                <div class="form-group row">
-                                    <div class="col-12 col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-lg form-control-user" type="password" id="examplePasswordInput" placeholder="Minecraft Username" name="password"></div>
-                                </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Register Expression of Interest</button>
+                                <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email"></div><button class="btn btn-primary btn-block text-white btn-user"
+                                    type="submit">Register Account</button>
                                 <hr>
                                 <hr>
                             </form>
-                            <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
+                            <div class="text-center"></div>
                             <div class="text-center"><a class="small" href="/login">Already have an account? Login!</a></div>
                         </div>
                     </div>

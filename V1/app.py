@@ -54,6 +54,11 @@ profilepagehtml = 'profile.html'
 members_page = 'table.html'
 registrationconfim_page = 'registrationcomplete.html'
 registrations = 'registrations.html'
+pageregistermember = 'register-1.html'
+member_registered_page = 'memberregistered.html'
+addloginpage = 'register-2.html'
+addedloginpage = 'registrationcomplete.html'
+accountinfopage = 'accountinfo.html'
 
 app = Flask(__name__)
 
@@ -83,7 +88,11 @@ def memberpage():
     else: 
         #------ NOT DONE ---------------
         return render_template("something")
-    
+
+@app.route('/member_portal')
+def memberportalpage():
+    return render_template(member_portal_page)
+
 @app.route('/members')
 def list_members():
     sql = "SELECT * FROM members"
@@ -130,6 +139,65 @@ def registrationconfim():
 
     return render_template(registrationconfim_page)
 
+
+@app.route('/registermember')
+def registermemberpage():
+    return render_template(pageregistermember)
+
+@app.route('/memberregistered', methods=['POST'])
+def memberregisteredwebpage():
+    name = request.form['name']
+    position = request.form['position']
+    grade = request.form['Grade']
+    mcname = request.form['mcname']
+    date = request.form['date']
+    areas = request.form['areas']
+    email = request.form['email']
+
+    conn = create_connection(DATABASE)
+    cur = conn.cursor()
+    data = (name, position, grade, mcname, date, email, areas)
+    sql = "INSERT INTO members (Name, Position, Grade, MCName, StartDate, Email, areas) VALUES (?,?,?,?,?,?,?)"
+
+    cur.execute(sql,data)
+    conn.commit()
+    conn.close()
+
+    return render_template(member_registered_page)
+
+
+@app.route('/loginadd')
+def addinglogin():
+    return render_template(addloginpage)
+
+@app.route('/addedlogin', methods=['POST'])
+def addedlogin():
+    name = request.form['name']
+    email = request.form['email']
+    password = request.form['password']
+
+    sql = "INSERT INTO users (username, password, email) VALUES (?,?,?)"
+    data = (name, email, password)
+
+    conn = create_connection(DATABASE)
+    cur = conn.cursor()
+    cur.execute(sql,data)
+
+    conn.commit()
+    conn.close()
+
+    return render_template(addedloginpage)
+
+@app.route('/accountinfo')
+def accountinformation():
+    sql = "SELECT * FROM users"
+    conn = create_connection(DATABASE)
+    cur = conn.cursor()
+    cur.execute(sql,)
+
+    info = cur.fetchall()
+
+    return render_template(accountinfopage, i=info)
 
 @app.errorhandler(404)
 def errorpage(error):

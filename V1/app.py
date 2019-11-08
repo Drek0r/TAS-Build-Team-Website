@@ -42,6 +42,23 @@ def create_connection(db_file):
 
     return conn
 
+def generateAlerts():
+
+    alerts = []
+    sql = "SELECT subject, message, icon, date from messages where type='alert' order by date desc"
+    conn = create_connection(cfg.DB)
+    cur = conn.cursor()
+    results = cur.execute(sql).fetchall()
+    for r in results:
+        alert = {
+            'subject': r[0],
+            'txt': r[1],
+            'icon': r[2],
+            'date': r[3]
+        }
+        alerts.append(alert)
+
+    return alerts
 
 def getMCServerData():
     cfg.debug(f"getMCServerData", DEBUG)
@@ -147,9 +164,18 @@ sess = Session()
 @app.route('/logout')
 @app.route('/dashboard')
 def home():
+    rule = request.url_rule
+
+    if 'logout' in rule.rule:
+        sec.clearSession()
+        u.user_data['loggedIn'] = False
+        sec.setSessionVar(sec.user_data_key, u.user_data)
+
+
+    alerts = generateAlerts()
     server_data = getMCServerData()
     projects = getProjectData()
-    return render_template('index.html', title="Dashboard", u=u.getUser(), s=server_data,p=projects)
+    return render_template(cfg.dashboard_page, title="Dashboard", a=alerts, u=u.getUser(), s=server_data,p=projects)
 
 
 @app.route('/login_page')
@@ -166,27 +192,29 @@ def memberpage():
     data = (email, password)
 
     user_exists = db.check_user(data)
+    cfg.debug(user_exists, True)
 
     if user_exists:
+        pic = f'https://minotar.net/helm/{user_exists[3]}/50.png" class="mcImage"'
         user_data['name'] = user_exists[0]
         user_data['id'] = user_exists[2]
         user_data['loggedIn'] = True
-        user_data['avatar'] = user_exists[5]
+        user_data['avatar'] = pic #user_exists[5]
         user_data['email'] = user_exists[4]
         user_data['role'] = user_exists[6   ]
 
         user = user_data
 
-        serverData = getMCServerData()
+        # serverData = getMCServerData()
+        #
+        # projects = getProjectData()
+        # cfg.debug(projects)
 
-        projects = getProjectData()
-        cfg.debug(projects)
-
-        return render_template(cfg.dashboard_page, u=user,s=serverData, p=projects)
+        return  redirect("/") #, u=user,s=serverData, p=projects)
 
     else:
         #------ NOT DONE ---------------
-        return redirect(url_for('/', msg="User not found, Try again"))
+        return redirect("/")
 
     # return render_template(cfg.login_page)
 
@@ -199,6 +227,9 @@ def errorpage(error):
         errorMsg = "500"#
 
     return render_template('404.html', title="SOMETHING WENt WRONG - OUCH", errorshort=errorMsg, error=error, u=u.getUser())
+
+
+
 
 
 if __name__ == "__main__":

@@ -57,10 +57,10 @@ def check_user(data):
     conn = create_connection(cfg.DB)
 
     sql = "SELECT m.name, m.username, m.memberId, m.minecraftName, m.email, m.pic, r.roleName " \
-          " from members m join roles r where  m.username=? and m.password=?"
+          " from members m join roles r where  m.email=? and m.password=?"
 
-    cfg.debug(sql)
-    cfg.debug(data)
+    cfg.debug(sql, True)
+    cfg.debug(data, True)
     cur = conn.cursor()
 
     cur.execute(sql, data)

@@ -35,7 +35,9 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="/members"> <i class="fas fa-table"></i><span>Members</span></a>
                     <a class="nav-link" href="/gallery"><i class="far fa-images"></i><span>Gallery</span></a>
+                    {%  if u.loggedIn is equalto False %}
                     <a class="nav-link" href="/register"><i class="fas fa-user-circle"></i><span>Register</span></a>
+                    {% endif %}
                     <a class="nav-link" href="/contact"><i class="fa fa-envelope"></i><span>Contact Team</span></a>
                     <a class="nav-link" href="/"><i class="fas fa-house-damage"></i><span>Home</span></a>
                 </li>
@@ -85,12 +87,12 @@
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
                                                                            data-toggle="dropdown" aria-expanded="false"
                                                                            href="#"><span
-                                        class="badge badge-danger badge-counter">3+</span><i
+                                        class="badge badge-danger badge-counter">{{ a|length }}</span><i
                                         class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
                                          role="menu">
                                         <h6 class="dropdown-header">alerts center</h6>
-                                        {% for alert in alerts %}
+                                        {% for alert in a %}
 
                                             <a class="d-flex align-items-center dropdown-item" href="#">
                                                 <div class="mr-3">
@@ -98,7 +100,10 @@
                                                             class="fas {{ alert['icon'] }} text-white"></i></div>
                                                 </div>
                                                 <div><span class="small text-gray-500">&nbsp;</span>
-                                                    <p>{{ alert.txt }}</p>
+                                                    <p>{{ alert.date }}: {{ alert.subject }}<br/>
+                                                    {{ alert.txt }}
+
+                                                    </p>
                                                 </div>
                                             </a>
                                         {% endfor %}
@@ -114,11 +119,11 @@
                             <div class="nav-item dropdown show no-arrow"><a class="dropdown-toggle nav-link"
                                                                             data-toggle="dropdown" aria-expanded="true"
                                                                             href="#"><span
-                                    class="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span><img
-                                    class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                    class="d-none d-lg-inline mr-2 text-gray-600 small">{{ u.name }}</span>
+                                <img class="border rounded-circle img-profile" src="{{ u.avatar }}"></a>
                                 <div
                                         class="dropdown-menu show shadow dropdown-menu-right animated--grow-in"
-                                        role="menu"><a class="dropdown-item" role="presentation" href="/profile"><i
+                                        role="menu"><a class="dropdown-item" role="presentation" href="/profile/{{ u.name }}"><i
                                         class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" role="presentation" href="/logout"><i

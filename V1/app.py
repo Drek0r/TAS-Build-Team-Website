@@ -1,12 +1,29 @@
-from flask import *
+from flask import Flask, render_template, request, session
+from cfg import Config as cfg
+from cfg import AppSecure as sec
+from cfg import User as usr
 import sqlite3
+import datetime
+import math
+#pip install Flask-Session
+from flask_session import Session
+
+# pip install mcstatus
+from mcstatus import MinecraftServer
 
 
-#----------------------------------------
-#--------- DATABASE stuff ---------------
-#----------------------------------------
 
-DATABASE = "data/database.db"
+
+# APP VARS
+
+DEBUG = cfg.DEBUG
+
+latestDoc = "https://1drv.ms/b/s!AqA1LpE9Eq3JgZYLsreleOySZs-stQ"
+discordInvite ="https://discord.gg/PvWdYa2"
+
+u = usr()
+user_data = u.getUser()
+
 
 def create_connection(db_file):
     """ create a DATABASE connection to the SQLite DATABASE
@@ -19,189 +36,131 @@ def create_connection(db_file):
         conn = sqlite3.connect(db_file)
     except Exception as e:
         print(e)
- 
+
     return conn
 
-def check_user(conn, data): 
-    '''
-    :param conn: connection to DATABASE 
-    :param data: a tuple containing (username, password) 
-    :return: true if user exists, false if they do not exist. 
-    ''' 
- 
-    sql = "SELECT *  from users where  username=? and password=?" 
-    conn = create_connection(DATABASE)
 
-    cur = conn.cursor() 
-    cur.execute(sql,data) 
-    user = cur.fetchone() 
-    if user: 
-        return user 
-    else:
-        return "USER NOT FOUND" 
+def getMCServerData():
+    cfg.debug(f"getMCServerData", DEBUG)
+    # get mc server info
+    mcServer = "minecraft.tas.qld.edu.au"
+    server = MinecraftServer(mcServer)
+    status = server.status()
+
+    latency = status.latency
+    playersOnLine = status.players.online
+    playersMax = status.players.max
+
+    query = server.query()
+    playersList = query.players.names
+    cfg.debug(f"Playerlist: {playersList}", DEBUG)
+
+    now = datetime.datetime.now()
+    # get max ping from db.
+
+    sql = "SELECT MAX(maxPing), date from ping"
+    cfg.debug(sql, DEBUG)
+    conn = create_connection(cfg.DB)
+    cur = conn.cursor()
+    cur.execute(sql )
+    maxPing = cur.fetchone()[0]
+
+
+    if latency > maxPing:
+        sql = f"INSERT INTO ping (maxPing, date) VALUES ({latency}, '{now}')"
+        cfg.debug(sql , DEBUG)
+        cur.execute(sql )
+        conn.commit()
+        maxPing = latency
+
+
+    sql = "SELECT COUNT(name) FROM members"
+    cur.execute(sql)
+    count = cur.fetchone()[0]
+
+    percent = math.floor(playersOnLine / playersMax * 100)
+
+    # get avatar
+    # tmpLst = []
+    # for player in playersList:
+    #
+    #     sql = f"SELECT pic from members where minecraftName = '{player}'"
+    #     cur.execute(sql)
+    #     pic = cur.fetchone()[0]
+    #
+    #     cfg.debug(f"player: {player} {pic}")
+    #     pName = player
+    #     p = {"name": pName, "pic": pic}
+    #     tmpLst.append(p)
+    #
+    # playersList = tmpLst
 
 
 
-#----------------------------------------
-#--------- ALL Pages --------------------
-#----------------------------------------
-homepage = 'blank.html'
-errorpagehtml = '404html'
-member_portal_page = 'index.html'
-registration_page = 'register.html'
-loginpage = 'login.html'
-profilepagehtml = 'profile.html'
-members_page = 'table.html'
-registrationconfim_page = 'registrationcomplete.html'
-registrations = 'registrations.html'
-pageregistermember = 'register-1.html'
-member_registered_page = 'memberregistered.html'
-addloginpage = 'register-2.html'
-addedloginpage = 'registrationcomplete.html'
-accountinfopage = 'accountinfo.html'
+    # listOfPlayers = "THIS WILL BE A LIST OF ALL PLAYERS"
+    serverData = {
+        "ip": mcServer,
+        "latency": latency,
+        "playersList": playersList,
+        "playerCount": playersOnLine,
+        "playersMax": playersMax,
+        "percent": percent,
+        "maxPing": maxPing,
+        "docLink": latestDoc,
+        "discord": discordInvite,
+        "members": count
+    }
+    return serverData
+
+
+def getProjectData():
+
+    # todo change desc to be based on percent commplete
+    sql = "SELECT name, percentComplete, desc from projectAreasTracking order by percentComplete ASC"
+    conn = create_connection(cfg.DB)
+    cur = conn.cursor()
+    cur.execute(sql, )
+    projectList = cur.fetchall()
+    projects = []
+    cfg.debug(projectList, DEBUG)
+    for project in projectList:
+        # if project[1] == 100:
+        #     percent = "Completed"
+        # else:
+        style = project[2]
+        percent =  f"{project[1] }%"
+        p = { "name": project[0], "done": percent, 'style': style}
+        projects.append(p)
+
+
+    return projects
+
+
 
 app = Flask(__name__)
+app.config.from_object('cfg')
 
-#----------------------------------------
-#--------- Actual Page Code -------------
-#----------------------------------------
 @app.route('/')
-def root():
-    return render_template(homepage)
+@app.route('/logout')
+@app.route('/dashboard')
+def home():
+    server_data = getMCServerData()
+    projects = getProjectData()
+    return render_template('index.html', title="Dashboard", u=u.getUser(), s=server_data,p=projects)
 
 @app.route('/login')
 def loginpagefunction():
     return render_template(loginpage)
 
-@app.route('/memberportal', methods=["POST"])
-def memberpage():
-    username = request.form['username']
-    password = request.form['password']
-    data = (username, password)
-    user_exists = False
-    conn = create_connection(DATABASE)
-
-    with conn: 
-        user_exists = check_user(conn,data) 
-    if user_exists: 
-        return render_template(member_portal_page, u=username)
-    else: 
-        #------ NOT DONE ---------------
-        return render_template("something")
-
-@app.route('/member_portal')
-def memberportalpage():
-    return render_template(member_portal_page)
-
-@app.route('/members')
-def list_members():
-    sql = "SELECT * FROM members"
-    conn = create_connection(DATABASE)
-    cur = conn.cursor()
-    cur.execute(sql,)
-    memberlist = cur.fetchall()
-    return render_template(members_page, m=memberlist)
-
-@app.route('/profile')
-def profilepage():
-    return render_template(profilepagehtml)
-
-@app.route('/register')
-def registration():
-    return render_template(registration_page)
-
-@app.route('/registrations')
-def registrationslist():
-    sql = "SELECT * FROM rego"
-    conn = create_connection(DATABASE)
-
-    cur = conn.cursor()
-    cur.execute(sql,)
-    members = cur.fetchall()
-    return render_template(registrations, m=members)
-
-@app.route('/registrationconfirmation', methods=['POST'])
-def registrationconfim():
-    name = request.form['name']
-    position = request.form['Position']
-    email = request.form['email']
-    mc_username = request.form['password']
-    conn = create_connection(DATABASE)
-
-    data = (name, position, email, mc_username)
-
-    sql = "INSERT INTO rego (name, position, email, mc_username) VALUES (?,?,?,?)"
-
-    cur = conn.cursor()
-    cur.execute(sql,data)
-    conn.commit()
-    conn.close()
-
-    return render_template(registrationconfim_page)
-
-
-@app.route('/registermember')
-def registermemberpage():
-    return render_template(pageregistermember)
-
-@app.route('/memberregistered', methods=['POST'])
-def memberregisteredwebpage():
-    name = request.form['name']
-    position = request.form['position']
-    grade = request.form['Grade']
-    mcname = request.form['mcname']
-    date = request.form['date']
-    areas = request.form['areas']
-    email = request.form['email']
-
-    conn = create_connection(DATABASE)
-    cur = conn.cursor()
-    data = (name, position, grade, mcname, date, email, areas)
-    sql = "INSERT INTO members (Name, Position, Grade, MCName, StartDate, Email, areas) VALUES (?,?,?,?,?,?,?)"
-
-    cur.execute(sql,data)
-    conn.commit()
-    conn.close()
-
-    return render_template(member_registered_page)
-
-
-@app.route('/loginadd')
-def addinglogin():
-    return render_template(addloginpage)
-
-@app.route('/addedlogin', methods=['POST'])
-def addedlogin():
-    name = request.form['name']
-    email = request.form['email']
-    password = request.form['password']
-
-    sql = "INSERT INTO users (username, password, email) VALUES (?,?,?)"
-    data = (name, email, password)
-
-    conn = create_connection(DATABASE)
-    cur = conn.cursor()
-    cur.execute(sql,data)
-
-    conn.commit()
-    conn.close()
-
-    return render_template(addedloginpage)
-
-@app.route('/accountinfo')
-def accountinformation():
-    sql = "SELECT * FROM users"
-    conn = create_connection(DATABASE)
-    cur = conn.cursor()
-    cur.execute(sql,)
-
-    info = cur.fetchall()
-
-    return render_template(accountinfopage, i=info)
-
 @app.errorhandler(404)
+@app.errorhandler(500)
 def errorpage(error):
-    return render_template('404.html')
+    errorMsg = "404"
+    if "500" in f"{error}":
+        errorMsg = "500"#
+
+    return render_template('404.html', title="SOMETHING WENt WRONG - OUCH", errorshort=errorMsg, error=error, u=u.getUser())
 
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run()

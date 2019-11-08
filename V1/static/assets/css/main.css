@@ -1,0 +1,22 @@
+
+.popover {
+  width:800px;
+  /*height:850px;*/
+   max-width: 100%;
+}
+
+
+#loginImage{
+    background-image: url("../../../static/assets/img/dogs/image3.jpeg");
+
+}
+
+.iframe_youtube{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.mcImage {
+    float: left;
+    margin-right: 10px;
+}

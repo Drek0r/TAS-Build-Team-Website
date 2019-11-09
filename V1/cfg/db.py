@@ -73,5 +73,23 @@ def check_user(data):
     if user:
         return user
     else:
-        return "USER NOT FOUND"
+        return False
 
+
+
+def getMemberList():
+    # sql = "SELECT * FROM members"
+    sql = "SELECT m.name, p.positionName ,g.name as grade, m.minecraftName, m.email, m.areas,  m.pic  "\
+            "FROM members m join gradeLevel g on m.grade = g.gradeLevelID JOIN positions p on m.position = p.positionID"\
+            " ORDER BY grade DESC"
+    conn = create_connection(cfg.DB)
+    cur = conn.cursor()
+    cur.execute(sql, )
+    memberList = cur.fetchall()
+    cfg.debug(f"MEMBERS: sql - {sql} MList: {memberList}",True)
+
+
+    
+
+
+    return memberList

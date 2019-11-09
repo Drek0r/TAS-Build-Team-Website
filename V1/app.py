@@ -82,7 +82,8 @@ def getMCServerData():
         server = MinecraftServer(mcServer)
         status = server.status()
 
-        latency = f"{status.latency} ms"
+        latency = status.latency
+
         playersOnLine = status.players.online
         playersMax = status.players.max
 
@@ -96,15 +97,16 @@ def getMCServerData():
 
 
         if latency > maxPing:
-            sql = f"INSERT INTO ping (maxPing, date) VALUES ({latency}, '{now}')"
+            sql = f"INSERT INTO ping (maxPing, date) VALUES ({status.latency}, '{now}')"
             cfg.debug(sql , DEBUG)
             cur.execute(sql )
             conn.commit()
-            maxPing = latency
+            maxPing = f"{latency} ms"
 
         percent = math.floor(playersOnLine / playersMax * 100)
 
     except Exception as e:
+        cfg.debug(f"MC error {e}", True)
         playersList = []
         playersOnLine = 0
         playersMax = 20
@@ -116,16 +118,17 @@ def getMCServerData():
     # listOfPlayers = "THIS WILL BE A LIST OF ALL PLAYERS"
     serverData = {
         "ip": mcServer,
-        "latency": latency,
+        "latency": f"{latency} ms",
         "playersList": playersList,
         "playerCount": playersOnLine,
         "playersMax": playersMax,
         "percent": percent,
-        "maxPing": maxPing,
+        "maxPing": f"{maxPing} ms",
         "docLink": latestDoc,
         "discord": discordInvite,
         "members": count
     }
+    cfg.debug(f"mc server data: {serverData} ", True)
     return serverData
 
 
@@ -201,23 +204,19 @@ def memberpage():
         user_data['loggedIn'] = True
         user_data['avatar'] = pic #user_exists[5]
         user_data['email'] = user_exists[4]
-        user_data['role'] = user_exists[6   ]
+        user_data['role'] = user_exists[6]
 
-        user = user_data
-
-        # serverData = getMCServerData()
-        #
-        # projects = getProjectData()
-        # cfg.debug(projects)
-
-        return  redirect("/") #, u=user,s=serverData, p=projects)
-
-    else:
         #------ NOT DONE ---------------
-        return redirect("/")
+    else:
+        user_data['loggedIn'] = False
 
-    # return render_template(cfg.login_page)
+    return redirect("/")
 
+
+@app.route("/members")
+def members_page():
+    memberList = db.getMemberList()
+    return render_template(cfg.members_page, title="Members List", u=user_data, ml=memberList)
 
 @app.errorhandler(404)
 @app.errorhandler(500)

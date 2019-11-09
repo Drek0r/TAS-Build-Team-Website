@@ -1,175 +1,191 @@
 {% extends 'base.html' %}
 {% block content %}
-            <div class="container-fluid">
+    <div class="container-fluid">
 
-                <div class="row">
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-primary py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Server Ping</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>{{ s.latency }} </span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
-                                </div>
+        <div class="row">
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-left-primary py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col mr-2">
+                                <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
+                                    <span>Server Ping</span></div>
+                                <div class="text-dark font-weight-bold h5 mb-0"><span>{{ s.latency }} </span></div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-primary py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Max Ping</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>{{ s.maxPing }}</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-info py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Number of users on</span></div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col-auto">
-                                                <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>{{ s.playerCount }} / {{ s.playersMax }}</span></div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar bg-info" aria-valuenow="{{ s.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ s.percent }}%;"><span class="sr-only">50%</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto"><i class="icon ion-ios-people fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-warning py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Number of members</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>{{ s.members }}</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
+                            <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0">Connected Users</h6>
+            </div>
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-left-primary py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col mr-2">
+                                <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
+                                    <span>Max Ping</span></div>
+                                <div class="text-dark font-weight-bold h5 mb-0"><span>{{ s.maxPing }}</span></div>
                             </div>
-                            <div class="card-body">
-                            <div class="row">
-                            {% if s.playersList|length == 0 %}
-                            <div class="col">
-                                There are currently 0 players online!
-                            </div>
-                            {% else %}
-                                {%  for player in s.playersList %}
+                            <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-left-info py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col mr-2">
+                                <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Number of users on</span>
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="text-dark font-weight-bold h5 mb-0 mr-3">
+                                            <span>{{ s.playerCount }} / {{ s.playersMax }}</span></div>
+                                    </div>
                                     <div class="col">
-
-                                     <p>
-                                         <!-- see https://minotar.net/ -->
-                                        <img src="https://minotar.net/helm/{{ player }}/100.png" class="mcImage">
-                                    {{ player }}
-                                    </p>
-                                    </div>
-
-                                {% endfor %}
-                            {% endif %}
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-7 col-xl-8">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="text-primary font-weight-bold m-0">Todo List</h6>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span></div>
-                                        <div class="col-auto">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-1"><label class="custom-control-label" for="formCheck-1"></label></div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-info" aria-valuenow="{{ s.percent }}"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: {{ s.percent }}%;">
+                                                <span class="sr-only">50%</span></div>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">11:30 AM</span></div>
-                                        <div class="col-auto">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-2"><label class="custom-control-label" for="formCheck-2"></label></div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">12:30 AM</span></div>
-                                        <div class="col-auto">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-3"><label class="custom-control-label" for="formCheck-3"></label></div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0">Server Details:</h6>
-                            </div>
-                            <div class="card-body">
-                                <h4>Server connection details</h4>
-                                <p>{{ s.ip }}</p>
-                                <h4>Server documents</h4>
-                                <p>&nbsp;<a href="{{ s.latestDoc }}" target="_blank">Latest Documents</a></p>
-                                <p>&nbsp;<a href="{{ s.discordInvite }}" target="_blank">Discord Invite</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 mb-4">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="text-primary font-weight-bold m-0">Projects</h6>
-                            </div>
-                            <div class="card-body">
-                                {% for project in p %}
-                                <h4 class="small font-weight-bold">{{ project.name }}<span
-                                        class="float-right">{{ project.done }}</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar {{ project.style }}" aria-valuenow="{{ project.done }}"
-                                         aria-valuemin="0" aria-valuemax="100"
-                                         style="width: {{ project.done }};"><span
-                                            class="sr-only">{{ project.done }}%</span></div>
                                 </div>
-
-                            {% endfor %}
-
                             </div>
+                            <div class="col-auto"><i class="icon ion-ios-people fa-2x text-gray-300"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-left-warning py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col mr-2">
+                                <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Number of members</span>
+                                </div>
+                                <div class="text-dark font-weight-bold h5 mb-0"><span>{{ s.members }}</span></div>
+                            </div>
+                            <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-{%  endblock %}
+        <div class="row">
+            <div class="col">
+                <div class="card shadow mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="text-primary font-weight-bold m-0">Connected Users</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% if s.playersList|length == 0 %}
+                                <div class="col">
+                                    There are currently 0 players online!
+                                </div>
+                            {% else %}
+                                {% for player in s.playersList %}
+                                    <div class="col">
+
+                                        <p>
+                                            <!-- see https://minotar.net/ -->
+                                            <img src="https://minotar.net/helm/{{ player }}/100.png" class="mcImage">
+                                            {{ player }}
+                                        </p>
+                                    </div>
+
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 col-xl-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="text-primary font-weight-bold m-0">Todo List</h6>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span
+                                        class="text-xs">10:30 AM</span></div>
+                                <div class="col-auto">
+                                    <div class="custom-control custom-checkbox"><input class="custom-control-input"
+                                                                                       type="checkbox" id="formCheck-1"><label
+                                            class="custom-control-label" for="formCheck-1"></label></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span
+                                        class="text-xs">11:30 AM</span></div>
+                                <div class="col-auto">
+                                    <div class="custom-control custom-checkbox"><input class="custom-control-input"
+                                                                                       type="checkbox" id="formCheck-2"><label
+                                            class="custom-control-label" for="formCheck-2"></label></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span
+                                        class="text-xs">12:30 AM</span></div>
+                                <div class="col-auto">
+                                    <div class="custom-control custom-checkbox"><input class="custom-control-input"
+                                                                                       type="checkbox" id="formCheck-3"><label
+                                            class="custom-control-label" for="formCheck-3"></label></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card shadow mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="text-primary font-weight-bold m-0">Server Details:</h6>
+                    </div>
+                    <div class="card-body">
+                        <h4>Server connection details</h4>
+                        <p>Server (IP): {{ s.ip }}</p>
+                        <h4>Server documents</h4>
+                        <p>&nbsp;<a href="{{ s.latestDoc }}" target="_blank">Latest Documents</a></p>
+                        <p>&nbsp;<a href="{{ s.discordInvite }}" target="_blank">Discord Invite</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="text-primary font-weight-bold m-0">Projects</h6>
+                    </div>
+                    <div class="card-body">
+                        {% for project in p %}
+                            <h4 class="small font-weight-bold">{{ project.name }}<span
+                                    class="float-right">{{ project.done }}</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar {{ project.style }}" aria-valuenow="{{ project.done }}"
+                                     aria-valuemin="0" aria-valuemax="100"
+                                     style="width: {{ project.done }};"><span
+                                        class="sr-only">{{ project.done }}%</span></div>
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

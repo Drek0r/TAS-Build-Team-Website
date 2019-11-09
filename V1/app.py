@@ -14,7 +14,9 @@ from flask_session import Session
 # pip install mcstatus
 from mcstatus import MinecraftServer
 
-
+#image resizeing https://flask-resize.readthedocs.io/usage.html
+#pip install flask-resize[full]
+# import flask_resize
 
 
 # APP VARS
@@ -26,7 +28,7 @@ discordInvite ="https://discord.gg/PvWdYa2"
 
 u = usr()
 user_data = u.getUser()
-
+alerts = []
 
 def create_connection(db_file):
     """ create a DATABASE connection to the SQLite DATABASE
@@ -156,11 +158,18 @@ def getProjectData():
 
 
 
+
+
+
+
 app = Flask(__name__)
 app.config.from_object('cfg')
 sec = sec()
 sess = Session()
-
+# app.config['RESIZE_URL'] = 'http://127.0.0.1:500'
+# app.config['RESIZE_ROOT'] = './static/assets/img/gallery/'
+#
+# resize = flask_resize.Resize(app)
 
 
 @app.route('/')
@@ -187,6 +196,7 @@ def login_page():
 
 @app.route('/login', methods=["POST"])
 def memberpage():
+    alerts = generateAlerts()
     _user_data = sec.getSessionVar(sec.user_data_key)
 
     email = request.form['email']
@@ -216,16 +226,55 @@ def memberpage():
 @app.route("/members")
 def members_page():
     memberList = db.getMemberList()
-    return render_template(cfg.members_page, title="Members List", u=user_data, ml=memberList)
+    alerts = generateAlerts()
+    return render_template(cfg.members_page, title="Members List", u=user_data, ml=memberList, a=alerts)
+
+@app.route("/gallery")
+def pic_gallery():
+    alerts = generateAlerts()
+    imageGallery = db.getImageDetails()
+    cfg.debug(imageGallery,True)
+
+    return render_template(cfg.gallery_page, title="Minecraft Gallery", u=user_data, i=imageGallery, a=alerts)
+
+@app.route("/contact")
+def contact():
+    alerts = generateAlerts()
+    cfg.debug(f"Alerts: {alerts}", True)
+    return render_template(cfg.contact_page, title="Contact us", u=user_data, a=alerts)
+
+
+@app.route("/contact_action", methods=["POST"])
+def contact_action():
+    alerts = generateAlerts()
+    title = "Thank you for contacting us"
+    message = {
+        "heading": "Thank you",
+        "message": "We will respond to your message shortly."
+    }
+
+    return render_template(cfg.contact_action_page, title=title, msg=message, u=user_data, a=alerts)
+
+
+@app.route("/register")
+def register():
+    alerts = generateAlerts()
+
+    return render_template(cfg.register_page, title="Register", a=alerts, u=user_data)
+
+@app.route("/terms")
+def terms():
+    return render_template(cfg.terms_page)
 
 @app.errorhandler(404)
 @app.errorhandler(500)
 def errorpage(error):
+    alerts = generateAlerts()
     errorMsg = "404"
     if "500" in f"{error}":
         errorMsg = "500"#
 
-    return render_template('404.html', title="SOMETHING WENt WRONG - OUCH", errorshort=errorMsg, error=error, u=u.getUser())
+    return render_template('404.html', title="SOMETHING WENt WRONG - OUCH", errorshort=errorMsg, error=error, u=u.getUser(), a=alerts)
 
 
 

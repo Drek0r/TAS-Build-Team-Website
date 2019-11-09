@@ -1,18 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container">
+     <h3 class="text-dark mb-4">Register Interest</h3>
         <div class="card shadow-lg o-hidden border-0 my-5">
             <div class="card-body p-0">
                 <div class="row">
                     <div class="col-lg-5 d-none d-lg-flex">
                         <div class="flex-grow-1 bg-register-image"
-                             style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
+                             style="background-image: url({{ url_for('static', filename='assets/img/dogs/image2.jpeg')}}"></div>
                     </div>
                     <div class="col-lg-7">
                         <div class="p-5">
-                            <div class="text-center">
-                                <h4 class="text-dark mb-4">Register Interest</h4>
-                            </div>
+
                             <form class="user" action="/create_account" method="post">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
@@ -52,23 +50,24 @@
                                                                  placeholder="Repeat Password" name="password_repeat">
                                     </div>
                                 </div>
-                                <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                               id="formCheck-1"><label class="form-check-label"
-                                                                                       for="formCheck-1">I have read the&nbsp;<a
-                                        href="/terms">TERMS</a>&nbsp;and agree to them</label></div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="formCheck-1">
+                                    <label class="form-check-label" for="formCheck-1">
+                                        I have read the&nbsp;<a class="terms" data-placement="top">TERMS</a>&nbsp;and agree to them
+                                    </label>
+                                </div>
                                 <button class="btn btn-primary btn-block text-white btn-user"
                                         type="submit">Register Account
                                 </button>
                                 <hr>
                                 <hr>
                             </form>
-                            <div class="text-center"><a class="small" href="/forgot">Forgot Password?</a></div>
-                            <div class="text-center"><a class="small" href="/login">Already have an account? Login!</a>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
 {% endblock %}

@@ -27,12 +27,13 @@ class Config(object):
     members_page = "table.html"
     error_page = "404.html"
 
-    register_page = "/members/register.html"
-    login_page = "/members/login.html"
-    profile_page = "/members/profile.html"
-    forgot_pwd_page ="/memberts/forgot-password.html" 
-
+    register_page = "members/register.html"
+    login_page = "members/login.html"
+    profile_page = "members/profile.html"
+    forgot_pwd_page ="members/forgot-password.html"
+    gallery_page = "gallery.html"
     contact_page = "contact.html"
+    contact_action_page = "messagePage.html"
     terms_page = "terms.html"
 
     ## LEGACY TODO Clean up

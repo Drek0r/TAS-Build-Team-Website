@@ -93,3 +93,22 @@ def getMemberList():
 
 
     return memberList
+
+
+def getImageDetails():
+    sql = "SELECT imageName, imageAlt, imageDesc from gallery"
+    conn = create_connection(cfg.DB)
+    cur = conn.cursor()
+    cur.execute(sql, )
+    imageList = cur.fetchall()
+
+    images = []
+    for image in imageList:
+        i = {
+            "img": image[0],
+            "alt": image[1],
+            "desc": image[2]
+              }
+        images.append(i)
+
+    return images

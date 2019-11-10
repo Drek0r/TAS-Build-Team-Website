@@ -20,3 +20,20 @@
     float: left;
     margin-right: 10px;
 }
+
+.small_label{
+    font-size: 12px;
+}
+
+.small_input{
+    width: 30%;
+    font-size: 12px;
+    height: 16px;
+    display: inline;
+
+}
+
+option{
+		font-family:  FontAwesome;
+
+}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+            <div class="container-fluid">
+                <h3 class="text-dark mb-1">Add or Edit Alerts</h3>
+            </div>
+            <form action="/alerts/add" method="post">
+                <div class="form-group d-inline-flex d-sm-flex flex-row align-items-sm-center" style="font-size: 12px;margin: 15px;">
+                    <label class="d-sm-flex align-items-sm-center" style="margin: 2px;">Title</label>
+                    <input class="form-control" type="text" style="font-size: 12px;padding: 5px;height: 20px;width: 50%;" name="new_alert_subject">
+                </div>
+                <div class="form-group d-inline-flex d-sm-flex flex-row align-items-sm-center" style="font-size: 12px;margin: 15px;">
+                    <label class="d-sm-flex align-items-sm-center" style="margin: 2px;">Text</label>
+                    <input class="form-control" type="text" style="font-size: 12px;padding: 5px;height: 20px;width: 70%;" name="new_alert_txt">
+
+                </div>
+                <div class="form-group d-inline-flex d-sm-flex flex-row align-items-sm-center"
+                    style="font-size: 12px;margin: 15px;">
+                    <label class="d-sm-flex align-items-sm-center" style="margin: 2px;">Icon</label>
+                    <input class="form-control" readonly="true" type="text" style="font-size: 12px;padding: 5px;height: 20px;width: 70%;" name="new_alert_icon" id="new_alert_icon" value="fa-500px">
+                    <i class="fa fa-star" id="alert_icon"></i>
+
+                    <select class="form-control iconList" id="alert_iconList" name="iconList" style="height: 21px;font-size: 12px;padding: 2px; width:20%">
+
+                            {% for i in icons %}
+                            <option class="fa" value=" {{ i[0] }}" style="font-family: FontAwesome">{{ i[1] }} {{ i[0] }}</option>
+                            {% endfor %}
+
+                    </select>
+
+
+
+                </div>
+                <button class="btn btn-primary text-center d-sm-flex justify-content-sm-center align-items-sm-center"
+                    type="submit" style="height: 25px;padding: 2px;margin: 13px;">
+                    New
+                </button>
+            </form>
+            <form action="/alerts/edit/" method="post">
+                <div class="form-group">
+
+                        {%  for alert in a %}
+                        <div class="form-group d-inline-flex d-sm-flex flex-row align-items-sm-center" style="font-size: 12px;margin: 15px;">
+                            <i class="fa {{ alert.icon }}"></i>
+                            <label class="d-sm-flex align-items-sm-center" style="margin: 2px;">Subject</label>
+                            <input class="form-control" type="text" style="font-size: 12px;padding: 5px;height: 20px;width: 50%;" name="alert_sub_{{ alert.id }}" value="{{ alert.subject }}">
+                            <input type="hidden" name="alert_sub_orig_{{ alert.id }}" value="{{ alert.subject }}">
+                            <label class="d-sm-flex" style="margin: 2px;">Txt</label>
+                            <input class="form-control" type="text" style="font-size: 12px;padding: 5px;height: 20px;width: 50%;" name="alert_txt_{{ alert.id }}" value="{{ alert.txt }}">
+                            <input type="hidden"  name="alert_txt_orig_{{ alert.id }}" value="{{ alert.txt }}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="delete_alert" name="alert_del_{{ alert.id }}">
+                                <label class="form-check-label" for="formCheck-1">Delete</label>
+                            </div>
+                        </div>
+                        {%  endfor %}
+                        <button class="btn btn-primary text-center d-sm-flex justify-content-sm-center align-items-sm-center" type="submit" style="height: 25px;padding: 2px;margin: 13px;">Save&nbsp;</button>
+
+                </div>
+            </form>
+
+{#            <div class="container-fluid">#}
+{#                <h3 class="text-dark mb-1">Add Edit Alerts</h3>#}
+{#            </div>#}
+{#            <form action="/alerts/add" method="post">#}
+{#                <div class="form-group"><label>Subject</label><input name="new_subject"    class="form-control" type="text"></div>#}
+{#                <div class="form-group"><label>Text</label><input name="new_text" class="form-control" type="text"></div>#}
+{#            <button class="btn btn-primary" type="submit">New</button>#}
+{#            </form>#}
+{#            <form action="/alerts/edit" method="post">#}
+{#                {% for alert in a %}#}
+{##}
+{#                <div class="form-group">#}
+{#                    #}
+{#                    <label class="small_label">Title</label><input name="alert_sub_{{ alert.id }}" class="form-control small_input" type="text" value="{{ alert.subject }}">#}
+{#                <label class="small_label">Desc</label><input name="alert_txt_{{ alert.id }}" class="form-control small_input" type="text" value="{{ alert.txt }}">#}
+{#                <label class="small_label">Icon</label><input name="alert_icon_{{ alert.id }}" class="form-control small_input" type="text" value="{{ alert.icon }}">#}
+{#                    <i class="fas {{ alert['icon'] }} text-white"></i>#}
+{#                <hr/>#}
+{#                </div>#}
+{##}
+{#                {% endfor %}#}
+{#                <button class="btn btn-primary" type="submit">Save</button>#}
+{#            </form>#}
+
+
+{% endblock %}

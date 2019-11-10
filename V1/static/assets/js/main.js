@@ -41,8 +41,29 @@ $( document ).ready(function() {
 
       });
 
+    /*
+    var str = "";
+    $( "select option:selected" ).each(function() {
+      str += $( this ).text() + " ";
+    });
+    $( "div" ).text( str );
+     */
+    $("#alert_iconList").change(function(){
+
+        // alert_icon change class
+        var iconClass = $('#alert_icon').attr('class');
+        console.log("Current Class:", iconClass);
+
+        $("#alert_icon").removeClass(iconClass);
+
+        var value = $("#alert_iconList option:selected").val();
+        $("#alert_icon").addClass(value).addClass("fa");
+        $("#new_alert_icon").val(value);
 
 
+
+
+    });
 
 });
 

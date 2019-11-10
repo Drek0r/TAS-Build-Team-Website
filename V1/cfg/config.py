@@ -1,3 +1,4 @@
+from datetime import datetime
 
 class Config(object):
 
@@ -9,8 +10,13 @@ class Config(object):
         return key
 
     def debug(msg, debug=False):
-        if debug:
-            print(f"debug: \t{msg}")
+        DEBUG = True
+        if debug and DEBUG:
+            now = datetime.now()
+            timestamp = datetime.timestamp(now)
+            ts = datetime.fromtimestamp(timestamp)
+
+            print(f"debug: {ts} \t{msg}")
 
 
     DEBUG = True

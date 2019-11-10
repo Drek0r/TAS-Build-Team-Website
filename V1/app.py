@@ -294,22 +294,55 @@ def terms():
 
 @app.route("/profile", methods=["POST"])
 @app.route("/profile/<uid>", methods=["POST","GET"])
+@app.route("/profile/update/", methods=["POST"])
+
 def profile_page(uid=""):
+
+    rule  = request.url_rule.rule
+
+
     user_data= sec.getUserSession()
-    if request.method == 'POST':
+
+    alerts = generateAlerts()
+    if request.method == 'POST' and "update" in rule:
+
         # get formdata s
         cfg.debug("UPDATING PROFILE ",True)
+        pwd = request.form['new_pwd']
+        name = request.form['mcUsername']
+        if request.form['orig_mc'] != name or pwd != "":
+            sql = "UPDATE members set minecraftName = ? , pic = ?"
+            if pwd.strip() != "":
+                sql = sql + f", password = {pwd}"
+            sql = sql + " where memberId = " + request.form['uid']
+
+            pic = f"https://minotar.net/helm/{name}/50.png"
+
+            data = (name, pic)
+
+            cfg.debug(sql,True)
+            cfg.debug(data,True)
+            conn = create_connection(cfg.DB)
+            cur = conn.cursor()
+            cur.execute(sql,data)
+            conn.commit()
+            conn.close()
+
+            user_data['mcUsername'] = name
+            user_data['pic'] = pic
+
+            sec.setSessionVar(sec.user_data_key,user_data)
+
+
+        return render_template(cfg.profile_page, a=alerts, u=user_data)
+
+
 
     if uid == "" or user_data['loggedIn'] == False or uid != user_data['mcUsername']:
         cfg.debug(f"REDIRECTING FROM MEMBERS UPADTE uid: {uid} loggedIn: {user_data['loggedIn']} id: {user_data['id']}",True)
         return redirect("/")
 
-
-
-
-
-
-    alerts = generateAlerts()
+    # display normal profile page
 
     return render_template(cfg.profile_page, a=alerts, u=user_data)
 

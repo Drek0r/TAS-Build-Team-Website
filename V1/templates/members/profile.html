@@ -45,28 +45,34 @@
                                 <div class="card shadow mb-3">
                                     <div class="card-header py-3">
                                         <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                                        <p class="text-primary m-0 ">Changing your minecraft name can break your avatar</p>
                                     </div>
                                     <div class="card-body">
-                                        <form action="/profile" method="post">
+                                        <form action="/profile/update/" method="post">
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="username"><strong>MC User Name</strong></label><input class="form-control" type="text" placeholder="user.name" name="username" value="{{ u['mcUsername'] }}"></div>
+                                                    <div class="form-group"><label for="username"><strong>Minecraft User Name</strong></label>
+                                                        <input class="form-control" type="text"  name="mcUsername" value="{{ u['mcUsername'] }}">
+                                                        <input type="hidden"  name="uid" value="{{ u['id'] }}">
+                                                        <input type="hidden"  name="orig_mc" value="{{ u['mcUsername'] }}">
+
+                                                    </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" placeholder="user@example.com" name="email" value="{{ u['email']}}"></div>
+                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" readonly="true" placeholder="user@example.com" name="email" value="{{ u['email']}}"></div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" placeholder="John" name="first_name" value="{{ u['firstname']}}"></div>
+                                                    <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" readonly="true" placeholder="John" name="first_name" value="{{ u['firstname']}}"></div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" placeholder="Doe" name="last_name" value="{{ u['lastname']}}"></div>
+                                                    <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" readonly="true" placeholder="Doe" name="last_name" value="{{ u['lastname']}}"></div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Minecraft Usernmae</strong></label><input class="form-control" type="text" placeholder="eg FluffybunnyUnicorn92" name="mc_name" value="{{ u['mcUsername']}}"></div>
+                                                    <div class="form-group"><label for="pwd"><strong>New Pwd</strong></label><input class="form-control" type="password" placeholder="Leave Blank if not changing" name="new_pwd"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container-fluid">
+            <div class="container">
+                <div class="row flex-box flex-wrap-wrap">
+
+                  {% for img in i %}
+                    <div class="col-sm-4 flex-box flex-justify-center flex-align-center"><a class="fancybox" rel="ligthbox" title="{{ img.alt }}" href="{{ url_for('static', filename='assets/img/gallery/')}}{{ img.img }}">
+
+                        <img class="img-fluid" src="{{ url_for('static', filename='assets/img/gallery/')}}{{ img.img }}"></a>
+                        <div class='text-right'>
+                        <small class='text-muted'>{{ img.desc }}</small>
+                    </div> <!-- text-right / end -->
+                    </div>
+{#                    <div class="col-sm-4 flex-box flex-justify-center flex-align-center"><a class="fancybox" rel="gallery1" title="Hero Image Technology" href="assets/img/hero-background-technology.jpg"><img class="img-fluid" src="assets/img/hero-background-technology.jpg"></a></div>#}
+{#                    <div class="col-sm-4 flex-box flex-justify-center flex-align-center"><a class="fancybox" rel="gallery1" title="Hero Image Travel" href="assets/img/hero-background-travel.jpg"><img class="img-fluid" src="assets/img/hero-background-travel.jpg"></a></div>#}
+{#                    <div class="col-sm-4 flex-box flex-justify-center flex-align-center"><a class="fancybox" rel="gallery1" title="Hero Image Food" href="assets/img/hero-background-food.jpg"><img class="img-fluid" src="assets/img/hero-background-food.jpg"></a></div>#}
+{#                    <div class="col-sm-4 flex-box flex-justify-center flex-align-center"><a class="fancybox" rel="gallery1" title="Hero Image Music" href="assets/img/hero-background-music.jpg"><img class="img-fluid" src="assets/img/hero-background-music.jpg"></a></div>#}
+{#                    <div class="col-sm-4 flex-box flex-justify-center flex-align-center"><a class="fancybox" rel="gallery1" title="Hero Image Photography" href="assets/img/hero-background-photography.jpg"><img class="img-fluid" src="assets/img/hero-background-photography.jpg"></a></div>#}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+      {% endblock %}

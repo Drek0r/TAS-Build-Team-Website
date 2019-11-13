@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4">Profile {{u['mcUsername']}}</h3>
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <div class="card mb-3">
+                            <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="https://minotar.net/armor/body//{{ u['mcUsername'] }}/100.png">
+                                <div class="mb-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row mb-3 d-none">
+                            <div class="col">
+                                <div class="card text-white bg-primary shadow">
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <p class="m-0">Position</p>
+                                                <p class="m-0"><strong>{{ u['position'] }}</strong></p>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card text-white bg-success shadow">
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <p class="m-0">Areas responsible for</p>
+                                                <p class="m-0"><strong>{{ u['areas'] }}</strong></p>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="card shadow mb-3">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                                        <p class="text-primary m-0 ">Changing your minecraft name can break your avatar</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="/profile/update/" method="post">
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Minecraft User Name</strong></label>
+                                                        <input class="form-control" type="text"  name="mcUsername" value="{{ u['mcUsername'] }}">
+                                                        <input type="hidden"  name="uid" value="{{ u['id'] }}">
+                                                        <input type="hidden"  name="orig_mc" value="{{ u['mcUsername'] }}">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" readonly="true" placeholder="user@example.com" name="email" value="{{ u['email']}}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" readonly="true" placeholder="John" name="first_name" value="{{ u['firstname']}}"></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" readonly="true" placeholder="Doe" name="last_name" value="{{ u['lastname']}}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="form-group"><label for="pwd"><strong>New Pwd</strong></label><input class="form-control" type="password" placeholder="Leave Blank if not changing" name="new_pwd"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card shadow"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © TAS Build Team - Building TAS on Minecraft brick at a time 2019</span></div>
+            </div>
+        </footer>
+    </div>
+    {% endblock %}

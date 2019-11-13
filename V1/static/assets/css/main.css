@@ -1,0 +1,39 @@
+
+.popover {
+  width:800px;
+  /*height:850px;*/
+   max-width: 100%;
+}
+
+
+#loginImage{
+    background-image: url("../../../static/assets/img/dogs/image3.jpeg");
+
+}
+
+.iframe_youtube{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.mcImage {
+    float: left;
+    margin-right: 10px;
+}
+
+.small_label{
+    font-size: 12px;
+}
+
+.small_input{
+    width: 30%;
+    font-size: 12px;
+    height: 16px;
+    display: inline;
+
+}
+
+option{
+		font-family:  FontAwesome;
+
+}
